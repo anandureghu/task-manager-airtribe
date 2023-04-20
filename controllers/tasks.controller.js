@@ -11,7 +11,14 @@ const GetTask = (req, res) => {
   res.status(result.code).send(result);
 };
 
+const DeleteTask = (req, res) => {
+  const id = +req.params.taskId;
+  const result = tasksService.deleteTask(id);
+  res.status(result.code).send(result);
+}
+
 module.exports = {
   GetAllTasks,
   GetTask,
+  DeleteTask
 };

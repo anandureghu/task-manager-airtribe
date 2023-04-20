@@ -39,7 +39,37 @@ const getTask = (id) => {
   };
 };
 
+const deleteTask = (id) => {
+  const errors = [];
+  const error = taskValidator.validateId(id);
+  if (!error) {
+    const newTasks = data.tasks.filter((task) => task.id !== id);
+    if (data.tasks.length === newTasks.length) {
+      return {
+        code: httpStatus.NOT_FOUND,
+        msg: "task not found",
+      };
+    } else {
+      data.tasks = newTasks;
+      return {
+        code: httpStatus.OK,
+        msg: "successfully deleted task",
+        data: newTasks,
+      };
+    }
+  } else {
+    errors.push(error);
+  }
+
+  return {
+    code: httpStatus.BAD_REQUEST,
+    errors: errors,
+    msg: "inavlid request",
+  };
+};
+
 module.exports = {
   getAllTasks,
   getTask,
+  deleteTask,
 };
