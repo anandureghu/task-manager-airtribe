@@ -12,9 +12,9 @@ const getAllTasks = () => {
 };
 
 const getTask = (id) => {
-  const errors = [];
-  const error = taskValidator.validateId(id);
-  if (!error) {
+  let errors = [];
+  const idErrors = taskValidator.validateId(id);
+  if (!idErrors.length) {
     const task = data.tasks.find((task) => task.id == id);
     if (!task) {
       return {
@@ -29,7 +29,49 @@ const getTask = (id) => {
       };
     }
   } else {
-    errors.push(error);
+    errors = [...errors, ...idErrors];
+  }
+
+  return {
+    code: httpStatus.BAD_REQUEST,
+    errors: errors,
+    msg: "inavlid request",
+  };
+};
+
+const updateTask = (id, newTask) => {
+  let errors = [];
+  const idErrors = taskValidator.validateId(id);
+  const taskErros = taskValidator.valdiateTask(newTask);
+  if (!idErrors.length && !taskErros.length) {
+    let updatingTask;
+    const newTasks = data.tasks.map((task) => {
+      if (task.id === id) {
+        task = {
+          id: task.id,
+          title: newTask.title,
+          description: newTask.description,
+          completed: newTask.completed,
+        };
+        updatingTask = task;
+      }
+      return task;
+    });
+    if (!updatingTask) {
+      return {
+        code: httpStatus.NOT_FOUND,
+        msg: "task not found",
+      };
+    } else {
+      data.tasks = newTasks;
+      return {
+        code: httpStatus.OK,
+        msg: "successfully updated task",
+        data: updatingTask,
+      };
+    }
+  } else {
+    errors = [...errors, ...idErrors, ...taskErros];
   }
 
   return {
@@ -40,9 +82,9 @@ const getTask = (id) => {
 };
 
 const deleteTask = (id) => {
-  const errors = [];
-  const error = taskValidator.validateId(id);
-  if (!error) {
+  let errors = [];
+  const idErrors = taskValidator.validateId(id);
+  if (!idErrors.length) {
     const newTasks = data.tasks.filter((task) => task.id !== id);
     if (data.tasks.length === newTasks.length) {
       return {
@@ -58,7 +100,7 @@ const deleteTask = (id) => {
       };
     }
   } else {
-    errors.push(error);
+    errors = [...errors, ...idErrors];
   }
 
   return {
@@ -71,5 +113,6 @@ const deleteTask = (id) => {
 module.exports = {
   getAllTasks,
   getTask,
+  updateTask,
   deleteTask,
 };
