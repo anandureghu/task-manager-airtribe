@@ -6,6 +6,8 @@ const GetAllTasks = (req, res) => {
   params.limit = req.query.limit ? +req.query.limit : data.tasks.length;
   params.offset = req.query.offset ? +req.query.offset : 0;
   params.status = req.query.status ? req.query.status : null;
+  params.sortBy = req.query.sortBy ? req.query.sortBy : "id";
+  params.sortOrder = req.query.sortOrder ? req.query.sortOrder : "asc";
 
   const result = tasksService.getAllTasks(params);
   res.status(result.code).send(result);

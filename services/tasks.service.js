@@ -12,6 +12,26 @@ const getAllTasks = (params) => {
     tasks = tasks.filter((task) => task.completed == utils.getBooleanValue(params.status));
   }
 
+  if (params.sortBy) {
+    tasks.sort((a, b) => {
+      if (params.sortBy === "createdAt") {
+        return new Date(a.createdAt) - new Date(b.createdAt);
+      } else {
+        if (a[params.sortBy] < b[params.sortBy]) {
+          return -1;
+        }
+        if (a[params.sortBy] > b[params.sortBy]) {
+          return 1;
+        }
+        return 0;
+      }
+    });
+
+    if (params.sortOrder === "desc") {
+      tasks.reverse();
+    }
+  }
+
   return {
     code: httpStatus.OK,
     msg: "successfully fetched tasks",
@@ -57,6 +77,7 @@ const createTask = (task) => {
       title: task.title,
       description: task.description,
       completed: task.completed ? task.completed : false,
+      createdAt: new Date(),
     };
     data.tasks.push(newTask);
     return {
@@ -84,7 +105,7 @@ const updateTask = (id, newTask) => {
     const newTasks = data.tasks.map((task) => {
       if (task.id === id) {
         task = {
-          id: task.id,
+          ...task,
           title: newTask.title,
           description: newTask.description,
           completed: newTask.completed,
