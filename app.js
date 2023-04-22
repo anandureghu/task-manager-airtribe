@@ -8,7 +8,7 @@ const app = express();
 app.use(bodyParser.json())
 
 app.get("/", (req, res) => {
-  res.send("<center>Welcome to Tasks Manager<br><a href='/tasks'>Get all Tasks</a></center>");
+  res.send("<center>Welcome to Tasks Manager<br><a href='/api/v1/tasks'>Get all Tasks</a></center>");
 });
 
 app.use("/api/v1/tasks", tasksRouter);

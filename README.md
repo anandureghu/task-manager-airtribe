@@ -9,8 +9,8 @@ cd task-manager-airtribe
 npm install
 npm run server
 
-you should see server started running at http://localhost:3000
 ```
+you should see server started running at http://localhost:3000
 
 ## Task model
 ```
