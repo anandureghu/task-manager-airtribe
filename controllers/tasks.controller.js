@@ -11,6 +11,12 @@ const GetTask = (req, res) => {
   res.status(result.code).send(result);
 };
 
+const CreateTask = (req, res) => {
+  const task = req.body;
+  const result = tasksService.createTask(task);
+  res.status(result.code).send(result);
+};
+
 const UpdateTask = (req, res) => {
   const id = +req.params.taskId;
   const newTask = req.body.task;
@@ -27,6 +33,7 @@ const DeleteTask = (req, res) => {
 module.exports = {
   GetAllTasks,
   GetTask,
+  CreateTask,
   DeleteTask,
   UpdateTask,
 };

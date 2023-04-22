@@ -3,7 +3,7 @@ let tasks = [
     id: 1,
     title: "Learn Node.js",
     description: "Learn Node.js fundamentals",
-    completed: false,
+    completed: true,
   },
   {
     id: 2,
@@ -14,38 +14,40 @@ let tasks = [
       The tasks should have a title, description, and a flag for completion status. 
       The API should be tested using Postman or Curl.
       Set up a basic Node.js project with Express.js and other necessary NPM packages.`,
-    completed: false,
+    completed: true,
   },
   {
     id: 3,
     title: "GET /tasks",
     description: "Retrieve all tasks",
-    completed: false,
+    completed: true,
   },
   {
     id: 4,
     title: "GET /tasks/:id",
     description: "Retrieve a single task by its ID",
-    completed: false,
+    completed: true,
   },
   {
     id: 5,
     title: "POST /tasks",
     description: "Create a new task",
-    completed: false,
+    completed: true,
   },
   {
     id: 6,
     title: "PUT /tasks/:id",
     description: "Update an existing task by its ID",
-    completed: false,
+    completed: true,
   },
   {
     id: 7,
     title: "DELETE /tasks/:id",
     description: "Delete a task by its ID",
-    completed: false,
+    completed: true,
   },
 ];
 
-module.exports = { tasks };
+let id = tasks.length;
+
+module.exports = { tasks, id };

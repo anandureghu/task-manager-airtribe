@@ -39,6 +39,34 @@ const getTask = (id) => {
   };
 };
 
+const createTask = (task) => {
+  let errors = [];
+  const taskErros = taskValidator.valdiateTask(task);
+  if (!taskErros.length) {
+    data.id = data.id + 1;
+    const newTask = {
+      id: data.id,
+      title: task.title,
+      description: task.description,
+      completed: task.completed ? task.completed : false,
+    };
+    data.tasks.push(newTask);
+    return {
+      code: httpStatus.CREATED,
+      msg: "successfully created task",
+      data: newTask,
+    };
+  } else {
+    errors = [...errors, ...taskErros];
+  }
+  
+  return {
+    code: httpStatus.BAD_REQUEST,
+    errors: errors,
+    msg: "inavlid request",
+  };
+};
+
 const updateTask = (id, newTask) => {
   let errors = [];
   const idErrors = taskValidator.validateId(id);
@@ -115,4 +143,5 @@ module.exports = {
   getTask,
   updateTask,
   deleteTask,
+  createTask,
 };
