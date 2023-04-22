@@ -1,13 +1,21 @@
 const httpStatus = require("http-status");
 
 const data = require("../utils/data");
+const utils = require("../utils/utils");
 const taskValidator = require("../validations/tasks.validation");
 
-const getAllTasks = () => {
+const getAllTasks = (params) => {
+  let tasks = data.tasks;
+  tasks = tasks.slice(params.offset, params.offset + params.limit);
+
+  if (params.status) {
+    tasks = tasks.filter((task) => task.completed == utils.getBooleanValue(params.status));
+  }
+
   return {
     code: httpStatus.OK,
     msg: "successfully fetched tasks",
-    data: data.tasks,
+    data: tasks,
   };
 };
 
@@ -59,7 +67,7 @@ const createTask = (task) => {
   } else {
     errors = [...errors, ...taskErros];
   }
-  
+
   return {
     code: httpStatus.BAD_REQUEST,
     errors: errors,

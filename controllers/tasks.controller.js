@@ -1,7 +1,13 @@
 const tasksService = require("../services/tasks.service");
+const data = require("../utils/data");
 
 const GetAllTasks = (req, res) => {
-  const result = tasksService.getAllTasks();
+  const params = {};
+  params.limit = req.query.limit ? +req.query.limit : data.tasks.length;
+  params.offset = req.query.offset ? +req.query.offset : 0;
+  params.status = req.query.status ? req.query.status : null;
+
+  const result = tasksService.getAllTasks(params);
   res.status(result.code).send(result);
 };
 
